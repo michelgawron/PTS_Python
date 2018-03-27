@@ -101,9 +101,6 @@ def draw_subway(height, width, coordinates, distances, path=[], file_name="subwa
     mydrawing.save()
 
 
-draw_subway(750, 750, coordinates, distances)
-
-
 def dijkstra(subwayGraph, start, end, visitedStations=[], distances={}, predecessors={}):
     """
         Recursively computes the shortest path using dijkstra algorithm
