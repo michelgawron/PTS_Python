@@ -16,10 +16,9 @@ def get_data_to_dict(mylist):
     :return:
     """
 
-    # Getting height and width from the file and converting it to integer
-    height, width = map(lambda x: int(x), mylist[0].split(" "))
+    height, width = [750, 750]
 
-    # Now we are going to get station names, which is the first part of this file, and store it in a dictionary
+    # We are going to get station names, which is the first part of this file, and store it in a dictionary
     i = 2
     dict_station_names = {}
     while mylist[i] != "coord sommets":
@@ -87,12 +86,14 @@ def draw_subway(height, width, coordinates, distances, path=[], file_name="subwa
     for key, values in coordinates.items():
         mydrawing.add(mydrawing.circle(center=(values[0], height - values[1]), r=2.5, fill="white", stroke="blue"))
 
+    # Drawing the path in another color if it is given
     i = 0
     for i in range(len(path) - 1):
         x1, y1 = coordinates[path[i]]
         x2, y2 = coordinates[path[i + 1]]
         mydrawing.add(mydrawing.line(start=(x1, height - y1), end=(x2, height - y2), stroke="red", stroke_width="2"))
 
+    # Drawing the path's stations in another color
     for i in range(len(path)):
         x1, y1 = coordinates[path[i]]
         mydrawing.add(mydrawing.circle(center=(x1, height-y1), r=2.5, fill="white", stroke="red"))
