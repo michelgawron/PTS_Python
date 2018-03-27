@@ -60,7 +60,6 @@ def get_data_to_dict(mylist):
     return [height, width, dict_station_names, dict_station_coordinates, dict_station_distance]
 
 
-h, w, names, coordinates, distances = get_data_to_dict(load_file("./metro.gr"))
 
 
 def draw_subway(height, width, coordinates, distances, path=[], file_name="subway.svg"):
@@ -158,8 +157,4 @@ def dijkstra(subwayGraph, start, end, visitedStations=[], distances={}, predeces
         return dijkstra(subwayGraph, x, end, visitedStations, distances, predecessors)
 
 
-p, d = dijkstra(distances, 0, 350)
-print(p)
-print(list(map(lambda x: names[x], p)))
-draw_subway(750, 750, coordinates, distances, path=p, file_name="trajet.svg")
 
