@@ -154,5 +154,57 @@ def dijkstra(subwayGraph, start, end, visitedStations=[], distances={}, predeces
         x = min(unvisited, key=unvisited.get)
         return dijkstra(subwayGraph, x, end, visitedStations, distances, predecessors)
 
+def longest_path(subwayGraph, start, end, visitedStations=[], distances={}, predecessors={}):
+    """
+        Recursively computes the shortest path using dijkstra algorithm
+        :param subwayGraph: Graph containing distances between each station
+        :param start: Id of the starting station (this parameter changes when we recurse)
+        :param end: Id of the ending station
+        :param visitedStations: List containing all visited stations
+        :param distances: Shortest distances found for the nodes from our first starting point
+        :param predecessors: Dictionary containing the predecessor node with the lowest distance
+        :return:
+    """
+    # Checking that stations exist
+    if start not in subwayGraph or end not in subwayGraph:
+        return
+
+    # Return condition - if we reach our station
+    if start == end:
+        # We build the longest path by getting predecessors of each node
+        path = []
+        pred = end
+        while pred != None:
+            path.append(pred)
+            pred = predecessors.get(pred, None)
+        return [path, distances[end]]
+    else:
+        # If this is the first execution of the algorithm, initializing our distance to 0
+        if not visitedStations:
+            distances[start] = 0
+
+        # Visiting neighbors that hasn't been visited yet (on this run or previous ones)
+        for neighbor in subwayGraph[start]:
+            if neighbor not in visitedStations:
+                # Computing distance from this run's starting point to the first starting point for each neighbor
+                new_distance = distances[start] + subwayGraph[start][neighbor]
+                # If there is no distance or if the distance found for this neighbor is longest than a previous one,
+                # storing it and setting this run's starting point as a predecessor for this neighbor
+                if new_distance > distances.get(neighbor, float('-inf')):
+                    distances[neighbor] = new_distance
+                    predecessors[neighbor] = start
+
+        # Mark this node as visited
+        visitedStations.append(start)
+
+        # No that we visited all neighbors, getting farther non visited station and recursively running dijkstra with
+        # This station as a starting point
+        unvisited = {}
+        for k in subwayGraph:
+            if k not in visitedStations:
+                unvisited[k] = distances.get(k, float('-inf'))
+        x = max(unvisited, key=unvisited.get)
+        return longest_path(subwayGraph, x, end, visitedStations, distances, predecessors)
+
 
 
